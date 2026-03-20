@@ -60,7 +60,7 @@ CATEGORIES = [
     "Street Gang Names",
 ]
 
-CATEGORIES = [
+CATEGORIES_2 = [
     # Classic Vegas
     "Things You See on the Strip",
     "Casino Games",
@@ -121,6 +121,8 @@ CATEGORIES = [
     "Things You Regret Buying at 2am",
     "Occupations of People at the Roulette Table",
 ]
+
+CATEGORIES += CATEGORIES_2
 
 # ── Session State Init ─────────────────────────────────────────────────────────
 
@@ -209,9 +211,15 @@ if st.session_state.phase == "setup":
     num_players = st.slider("Number of players", min_value=3, max_value=12, value=st.session_state.num_players)
     st.session_state.num_players = num_players
 
-    max_imposters = max(1, num_players // 3)
-    num_imposters = st.slider("Number of imposters", min_value=1, max_value=max_imposters, value=min(st.session_state.num_imposters, max_imposters))
-    st.session_state.num_imposters = num_imposters
+    max_imposters = max(1, (num_players - 1) // 2)
+    clamped_imposters = min(max(1, st.session_state.num_imposters), max_imposters)
+    if max_imposters == 1:
+        st.session_state.num_imposters = 1
+        num_imposters = 1
+        st.markdown("**Number of imposters:** 1")
+    else:
+        num_imposters = st.slider("Number of imposters", min_value=1, max_value=max_imposters, value=clamped_imposters)
+        st.session_state.num_imposters = num_imposters
 
     st.divider()
     st.markdown(f"**{num_players} players** · **{num_imposters} imposter{'s' if num_imposters > 1 else ''}** · **{num_players - num_imposters} civilian{'s' if num_players - num_imposters > 1 else ''}**")
