@@ -5,124 +5,134 @@ Imposter Game — Streamlit Edition
 import streamlit as st
 import random
 
-# ── Categories (just the names) ───────────────────────────────────────────────
+# ── Categories + vague imposter hints ─────────────────────────────────────────
+# Each entry: ("Category Name", "Vague hint for imposter")
 
 CATEGORIES = [
-    "Jeffrey Epstein's Contacts",
-    "Car Brands",
-    "Fast Food Chains",
-    "US Presidents",
-    "Marvel Superheroes",
-    "Olympic Sports",
-    "Social Media Apps",
-    "Types of Cheese",
-    "Dog Breeds",
-    "Countries in Africa",
-    "Tech Billionaires",
-    "Conspiracy Theories",
-    "Things in a Hospital",
-    "Words That Sound Rude But Aren't",
-    "Reality TV Shows",
-    "Things Found at a Crime Scene",
-    "Poker Terms",
-    "Types of Therapy",
-    "Things Elon Musk Has Named",
-    "Rejected McDonald's Menu Items",
-    "Currencies Around the World",
-    "Military Ranks",
-    "Types of Knives",
-    "Illegal Drugs",
-    "Types of Plastic Surgery",
-    "Cults",
-    "Dictators",
-    "Things You'd Find in Vegas",
-    "Phobias",
-    "Slang Terms From the 2000s",
-    "Mafia Terminology",
-    "Bond Villains",
-    "Serial Killers",
-    "Cocktails",
-    "Skateboard Tricks",
-    "Wrestling Moves",
-    "Gym Equipment",
-    "Crypto Coins",
-    "Sneaker Brands",
-    "Things at a Funeral",
-    "Prison Slang",
-    "Reasons to Call 911",
-    "Kanye West Albums",
-    "OnlyFans Niches",
-    "Scam Types",
-    "Taxi Apps",
-    "Things in a Trap House",
-    "Eminem Songs",
-    "Tattoo Styles",
-    "Street Gang Names",
+    # General
+    ("Jeffrey Epstein's Contacts", "powerful people"),
+    ("Car Brands", "vehicles"),
+    ("Fast Food Chains", "food"),
+    ("US Presidents", "leaders"),
+    ("Marvel Superheroes", "fiction"),
+    ("Olympic Sports", "competition"),
+    ("Social Media Apps", "internet"),
+    ("Types of Cheese", "dairy"),
+    ("Dog Breeds", "animals"),
+    ("Countries in Africa", "places"),
+    ("Tech Billionaires", "rich people"),
+    ("Conspiracy Theories", "secrets"),
+    ("Things in a Hospital", "medical"),
+    ("Words That Sound Rude But Aren't", "language"),
+    ("Reality TV Shows", "entertainment"),
+    ("Things Found at a Crime Scene", "evidence"),
+    ("Poker Terms", "gambling"),
+    ("Types of Therapy", "mental health"),
+    ("Things Elon Musk Has Named", "branding"),
+    ("Rejected McDonald's Menu Items", "food"),
+    ("Currencies Around the World", "money"),
+    ("Military Ranks", "hierarchy"),
+    ("Types of Knives", "tools"),
+    ("Illegal Drugs", "substances"),
+    ("Types of Plastic Surgery", "body"),
+    ("Cults", "groups"),
+    ("Dictators", "power"),
+    ("Things You'd Find in Vegas", "nightlife"),
+    ("Phobias", "fear"),
+    ("Slang Terms From the 2000s", "language"),
+    ("Mafia Terminology", "crime"),
+    ("Bond Villains", "fiction"),
+    ("Serial Killers", "crime"),
+    ("Cocktails", "drinks"),
+    ("Skateboard Tricks", "sports"),
+    ("Wrestling Moves", "combat"),
+    ("Gym Equipment", "fitness"),
+    ("Crypto Coins", "money"),
+    ("Sneaker Brands", "fashion"),
+    ("Things at a Funeral", "death"),
+    ("Prison Slang", "crime"),
+    ("Reasons to Call 911", "emergency"),
+    ("Kanye West Albums", "music"),
+    ("OnlyFans Niches", "content"),
+    ("Scam Types", "deception"),
+    ("Taxi Apps", "transport"),
+    ("Things in a Trap House", "chaos"),
+    ("Eminem Songs", "music"),
+    ("Tattoo Styles", "art"),
+    ("Street Gang Names", "groups"),
+
+    # Vegas
+    ("Things You See on the Strip", "nightlife"),
+    ("Casino Games", "gambling"),
+    ("Famous Vegas Hotels", "places"),
+    ("Vegas Buffet Foods", "food"),
+    ("Things Said by a Blackjack Dealer", "gambling"),
+    ("Slot Machine Symbols", "gambling"),
+    ("Vegas Show Acts", "entertainment"),
+    ("Things in a Casino That Have No Clocks", "objects"),
+    ("Reasons the Pit Boss is Watching You", "suspicion"),
+    ("Free Drink Excuses", "social"),
+    ("Things That Happen at 4am on Fremont Street", "chaos"),
+    ("Reasons Someone is Running Through a Casino", "urgency"),
+    ("What's in a Stranger's Cup at the Craps Table", "drinks"),
+    ("Things You Find in a Vegas Hotel Room That Weren't Yours", "mystery"),
+    ("Excuses for Being Down $3,000", "money"),
+    ("Things the Uber Driver Has Seen This Week", "stories"),
+    ("What Happened in Vegas That Definitely Won't Stay There", "secrets"),
+    ("Reasons the Bachelor Party Got Kicked Out", "trouble"),
+    ("Things a Vegas Magician Says", "performance"),
+    ("Jobs That Only Exist in Vegas", "work"),
+    ("Poker Hands", "gambling"),
+    ("Reasons You're Down Bad at the Tables", "losing"),
+    ("Things High Rollers Say", "wealth"),
+    ("Ways to Lose Money Faster", "money"),
+    ("Things Overheard at the Sportsbook", "gambling"),
+    ("VIP Bottle Service Excuses", "nightlife"),
+    ("Casino Chip Colors", "gambling"),
+    ("Card Counting Techniques", "strategy"),
+    ("Things a Casino Cheater Would Say", "deception"),
+    ("Reasons You're Banned from the Bellagio", "trouble"),
+    ("Drive-Thru Wedding Chapel Names", "romance"),
+    ("Celebrity Residency Acts", "entertainment"),
+    ("Things on a Vegas Pawn Shop Shelf", "objects"),
+    ("Reasons Someone is Crying Outside a Casino", "emotions"),
+    ("What the Guy in Head-to-Toe Affliction is Doing", "chaos"),
+    ("Names of Fake Elvis Impersonators", "performance"),
+    ("Things Sold on the Strip for $20", "commerce"),
+    ("Vegas Wedding Regrets", "romance"),
+    ("Things People Lie About When They Get Home", "secrets"),
+    ("Reasons to Visit the 24hr Wedding Chapel at 3am", "impulse"),
+    ("What's in the Mystery Cocktail", "drinks"),
+    ("Cirque du Soleil Act Names", "performance"),
+    ("Things the Vegas Taxi Driver Says", "stories"),
+    ("Crimes Committed on the Strip", "crime"),
+    ("Reasons the Pool Party Got Shut Down", "trouble"),
+    ("Things a Vegas Instagram Influencer Posts", "social media"),
+    ("What's Inside the Mystery Bag at the Pawn Shop", "mystery"),
+    ("Nicknames for Regular Gamblers", "people"),
+    ("Things You Regret Buying at 2am", "impulse"),
+    ("Occupations of People at the Roulette Table", "people"),
 ]
 
-CATEGORIES_2 = [
-    # Classic Vegas
-    "Things You See on the Strip",
-    "Casino Games",
-    "Famous Vegas Hotels",
-    "Vegas Buffet Foods",
-    "Things Said by a Blackjack Dealer",
-    "Slot Machine Symbols",
-    "Vegas Show Acts",
-    "Things in a Casino That Have No Clocks",
-    "Reasons the Pit Boss is Watching You",
-    "Free Drink Excuses",
+# ── Random starter traits (avoids revealing who the imposter is) ──────────────
 
-    # Chaotic Vegas Energy
-    "Things That Happen at 4am on Fremont Street",
-    "Reasons Someone is Running Through a Casino",
-    "What's in a Stranger's Cup at the Craps Table",
-    "Things You Find in a Vegas Hotel Room That Weren't Yours",
-    "Excuses for Being Down $3,000",
-    "Things the Uber Driver Has Seen This Week",
-    "What Happened in Vegas That Definitely Won't Stay There",
-    "Reasons the Bachelor Party Got Kicked Out",
-    "Things a Vegas Magician Says",
-    "Jobs That Only Exist in Vegas",
-
-    # Degenerate Gambling
-    "Poker Hands",
-    "Reasons You're Down Bad at the Tables",
-    "Things High Rollers Say",
-    "Ways to Lose Money Faster",
-    "Things Overheard at the Sportsbook",
-    "VIP Bottle Service Excuses",
-    "Casino Chip Colors",
-    "Card Counting Techniques",
-    "Things a Casino Cheater Would Say",
-    "Reasons You're Banned from the Bellagio",
-
-    # Only in Vegas
-    "Drive-Thru Wedding Chapel Names",
-    "Celebrity Residency Acts",
-    "Things on a Vegas Pawn Shop Shelf",
-    "Reasons Someone is Crying Outside a Casino",
-    "What the Guy in Head-to-Toe Affliction is Doing",
-    "Names of Fake Elvis Impersonators",
-    "Things Sold on the Strip for $20",
-    "Vegas Wedding Regrets",
-    "Things People Lie About When They Get Home",
-    "Reasons to Visit the 24hr Wedding Chapel at 3am",
-
-    # Unhinged Energy
-    "What's in the Mystery Cocktail",
-    "Cirque du Soleil Act Names",
-    "Things the Vegas Taxi Driver Says",
-    "Crimes Committed on the Strip",
-    "Reasons the Pool Party Got Shut Down",
-    "Things a Vegas Instagram Influencer Posts",
-    "What's Inside the Mystery Bag at the Pawn Shop",
-    "Nicknames for Regular Gamblers",
-    "Things You Regret Buying at 2am",
-    "Occupations of People at the Roulette Table",
+STARTER_TRAITS = [
+    "the player who woke up earliest today",
+    "the player wearing the most colors",
+    "the player whose birthday is coming up soonest",
+    "the player who traveled the furthest to get here",
+    "the player with the longest hair",
+    "the player who last ate something",
+    "the player sitting closest to the door",
+    "the player who most recently used their phone",
+    "the player with the most steps today",
+    "the player who laughed most recently",
+    "the player wearing the most accessories",
+    "the player who stayed up latest last night",
+    "the player who has been to Vegas the most times",
+    "the player who spent the most money today",
+    "the player with the loudest laugh",
 ]
-
-CATEGORIES += CATEGORIES_2
 
 # ── Session State Init ─────────────────────────────────────────────────────────
 
@@ -133,8 +143,10 @@ def init_state():
         "num_imposters": 1,
         "roles": {},
         "category": None,
+        "hint": None,
         "current_view_index": 0,
         "seen": set(),
+        "starter_trait": None,
     }
     for k, v in defaults.items():
         if k not in st.session_state:
@@ -143,7 +155,8 @@ def init_state():
 init_state()
 
 def reset_game():
-    for k in ["phase", "num_players", "num_imposters", "roles", "category", "current_view_index", "seen"]:
+    for k in ["phase", "num_players", "num_imposters", "roles", "category", "hint",
+              "current_view_index", "seen", "starter_trait"]:
         if k in st.session_state:
             del st.session_state[k]
     init_state()
@@ -152,13 +165,17 @@ def start_game(num_players, num_imposters):
     indices = list(range(num_players))
     imposters = set(random.sample(indices, num_imposters))
     roles = {i: ("imposter" if i in imposters else "civilian") for i in indices}
-    category = random.choice(CATEGORIES)
+
+    category_name, hint = random.choice(CATEGORIES)
+    starter_trait = random.choice(STARTER_TRAITS)
 
     st.session_state.phase = "reveal"
     st.session_state.roles = roles
-    st.session_state.category = category
+    st.session_state.category = category_name
+    st.session_state.hint = hint
     st.session_state.current_view_index = 0
     st.session_state.seen = set()
+    st.session_state.starter_trait = starter_trait
 
 # ── Styling ───────────────────────────────────────────────────────────────────
 
@@ -196,6 +213,18 @@ st.markdown("""
         display: inline-block;
         margin: 0.5rem auto;
     }
+    .hint-box {
+        background: #2e2a1a;
+        color: #fbbf24;
+        font-size: 1.1rem;
+        font-weight: 700;
+        text-align: center;
+        padding: 0.8rem 1.5rem;
+        border-radius: 999px;
+        display: inline-block;
+        margin: 0.5rem auto;
+        border: 1px solid #92400e;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -205,7 +234,7 @@ st.markdown("""
 
 if st.session_state.phase == "setup":
     st.title("🕵️ Imposter Game")
-    st.markdown("Everyone gets a **category** to discuss — but imposters don't know what it is. Find them before they fool you!")
+    st.markdown("Everyone gets a **category** to discuss — but imposters only get a vague hint. Find them before they fool you!")
     st.divider()
 
     num_players = st.slider("Number of players", min_value=3, max_value=12, value=st.session_state.num_players)
@@ -255,6 +284,7 @@ elif st.session_state.phase == "reveal":
     else:
         role = st.session_state.roles[idx]
         category = st.session_state.category
+        hint = st.session_state.hint
 
         if role == "civilian":
             st.markdown('<div class="role-box civilian-box">✅ CIVILIAN</div>', unsafe_allow_html=True)
@@ -262,8 +292,8 @@ elif st.session_state.phase == "reveal":
             st.caption("You know the category. Discuss it without giving it away to the imposters!")
         else:
             st.markdown('<div class="role-box imposter-box">🔴 IMPOSTER</div>', unsafe_allow_html=True)
-            st.markdown('<div style="text-align:center"><span class="category-box" style="background:#2e1a1a;color:#f87171">Category: ???</span></div>', unsafe_allow_html=True)
-            st.caption("You don't know the category. Bluff your way through the discussion!")
+            st.markdown(f'<div style="text-align:center"><span class="hint-box">Hint: {hint}</span></div>', unsafe_allow_html=True)
+            st.caption("You don't know the exact category — just the hint. Bluff your way through!")
 
         st.divider()
         if st.button("✅ Done — pass to next player", use_container_width=True):
@@ -279,7 +309,13 @@ elif st.session_state.phase == "reveal":
 elif st.session_state.phase == "play":
     st.title("💬 Discussion Time")
     st.markdown("Everyone takes turns saying **one word or phrase** related to the category.")
-    st.markdown("Imposters — bluff! Civilians — be specific enough to prove yourself without being too obvious.")
+    st.markdown("Imposters — use your hint to bluff! Civilians — be specific enough to prove yourself without being too obvious.")
+    st.divider()
+
+    trait = st.session_state.starter_trait
+    st.success(f"### 🎯 First up: {trait}")
+    st.caption("This was randomly chosen — it has nothing to do with who the imposter is.")
+
     st.divider()
 
     num_imposters = st.session_state.num_imposters
@@ -304,6 +340,7 @@ elif st.session_state.phase == "result":
     st.title("🎭 The Reveal")
     st.markdown("**The category was:**")
     st.markdown(f'<div style="text-align:center"><span class="category-box" style="font-size:1.4rem;padding:1rem 2rem">{st.session_state.category}</span></div>', unsafe_allow_html=True)
+    st.markdown(f'<div style="text-align:center"><span class="hint-box">Imposter hint was: {st.session_state.hint}</span></div>', unsafe_allow_html=True)
 
     st.divider()
     st.subheader("🧾 Player Roles")
